@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto: A Arquitetura do Esquecimento</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #3498db;
+            --human: #e74c3c;
+            --pc: #2ecc71;
+            --bg: #f8f9fa;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        header h1 { margin: 0 0 10px 0; }
+        header p { margin: 0; font-size: 0.9em; opacity: 0.8; }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .section-title {
+            color: var(--primary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+        }
+        /* Interactive App Styles */
+        .app-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            transition: opacity 0.3s;
+        }
+        button:hover { opacity: 0.8; }
+        .btn-pc { background-color: var(--pc); }
+        .btn-human { background-color: var(--human); }
+        .btn-download {
+            background-color: #f1c40f;
+            color: #2c3e50;
+            margin-top: 15px;
+            font-size: 1.1em;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .simulation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .sim-card {
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .sim-card h3 { margin-top: 0; }
+        .pc-card { border-top: 4px solid var(--pc); }
+        .human-card { border-top: 4px solid var(--human); }
+        
+        .process-step {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f1f2f6;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .output-box {
+            margin-top: 15px;
+            padding: 15px;
+            background: #2f3542;
+            color: #a4b0be;
+            font-family: monospace;
+            border-radius: 5px;
+            min-height: 50px;
+        }
+        .human-output { font-family: 'Georgia', serif; font-style: italic; color: #dfe4ea; }
+        
+        /* Text content styles */
+        .content-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        .provocation {
+            background-color: #e8f4f8;
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .simulation-grid {
+                grid-template-columns: 1fr;
+            }
+            .input-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>A Arquitetura do Esquecimento</h1>
+        <p>Um Produto Digital Interativo sobre a Psicologia da Memória</p>
+        <p><strong>Disciplina:</strong> 05317 - PSICOLOGIA I - T10 (UFRPE)</p>
+        <p><strong>Aluno:</strong> Guilherme Bernardino Fernandes de Oliveira</p>
+        <button class="btn-download" onclick="downloadHTML()">📥 Baixar este arquivo HTML</button>
+    </header>
+
+    <div class="container">
+        
+        <h2 class="section-title">1. O Produto Computacional: Simulação de Processamento</h2>
+        <p>Insira uma "lembrança" (uma frase detalhada) no campo abaixo e processe-a utilizando os dois sistemas para observar como a informação é codificada, armazenada e recuperada em cada um.</p>
+        
+        <div class="app-container">
+            <div class="input-group">
+                <input type="text" id="memoryInput" placeholder="Ex: Ontem fui ao cinema assistir a um filme de terror. Estava chovendo muito e a sala estava vazia.">
+            </div>
+            <div class="input-group">
+                <button class="btn-pc" onclick="simulatePC()">Processar como Computador</button>
+                <button class="btn-human" onclick="simulateHuman()">Processar como Humano</button>
+            </div>
+
+            <div class="simulation-grid">
+                <div class="sim-card pc-card">
+                    <h3 style="color: var(--pc)">Memória Computacional</h3>
+                    <div id="pc-steps" style="display:none;">
+                        <div class="process-step"><strong>1. Codificação:</strong> Traduzindo string para binário/ASCII. Nenhuma perda de dados.</div>
+                        <div class="process-step"><strong>2. Armazenamento:</strong> Gravando nos clusters do Disco Rígido (HD/SSD). Estado estático.</div>
+                        <div class="process-step"><strong>3. Recuperação:</strong> Acessando índice. Retornando cópia exata (bit a bit).</div>
+                        <div class="output-box" id="pc-output"></div>
+                    </div>
+                </div>
+
+                <div class="sim-card human-card">
+                    <h3 style="color: var(--human)">Memória Humana</h3>
+                    <div id="human-steps" style="display:none;">
+                        <div class="process-step"><strong>1. Codificação:</strong> Filtro atencional aplicado. Fatores emocionais alteram a percepção inicial.</div>
+                        <div class="process-step"><strong>2. Consolidação:</strong> Sinapses fortalecidas (LTP). Sujeito a interferência de outras informações.</div>
+                        <div class="process-step"><strong>3. Recuperação:</strong> Reconstrução ativa. Preenchimento de lacunas com conhecimentos prévios (Efeito do Contexto).</div>
+                        <div class="output-box human-output" id="human-output"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="provocation">
+            <strong>Questão-Provocação:</strong> Se computadores armazenam e recuperam informações, podemos afirmar que a memória humana funciona da mesma maneira?
+            <br><br>
+            <strong>Resposta:</strong> Definitivamente não. Como demonstrado na simulação acima, a memória de um computador é um sistema de <em>reprodução</em> estática. A memória humana, por outro lado, é um processo de <em>reconstrução</em> dinâmica. Enquanto o computador recupera arquivos idênticos aos originais, o ser humano recria a lembrança a cada evocação, sendo influenciado por emoções, contexto atual e interferências externas.
+        </div>
+
+        <h2 class="section-title">2. Compreendendo a Memória &amp; Como Funciona</h2>
+        <div class="content-box">
+            <p>A memória é um Processo Psicológico Básico essencial, pois é através dela que atribuímos significado às experiências, aprendemos e construímos nossa identidade. Sem memória, viveríamos em um eterno presente, incapazes de reconhecer pessoas ou utilizar conhecimentos prévios.</p>
+            <p>O funcionamento da memória ocorre em três processos interligados:</p>
+            <ul>
+                <li><strong>Codificação:</strong> É a entrada da informação. Transforma-se o estímulo físico/sensorial em um formato que o cérebro possa processar (representação mental). Depende fortemente da atenção e do estado emocional.</li>
+                <li><strong>Armazenamento/Consolidação:</strong> É a manutenção da informação ao longo do tempo. A consolidação (especialmente durante o sono) envolve alterações sinápticas que estabilizam o traço de memória.</li>
+                <li><strong>Recuperação:</strong> É o acesso à informação armazenada. Pode ocorrer por reconhecimento (com pistas) ou evocação (sem pistas). Nunca é uma cópia exata do que foi codificado.</li>
+            </ul>
+        </div>
+
+        <h2 class="section-title">3. Sistemas de Memória</h2>
+        <div class="content-box">
+            <p>A memória não é uma entidade única, mas subdivide-se em sistemas com características distintas:</p>
+            <ul>
+                <li><strong>Memória Sensorial:</strong> Retém impressões fugazes (frações de segundo) dos estímulos sensoriais (ecoica, icônica).</li>
+                <li><strong>Memória de Curto Prazo / Trabalho:</strong> Mantém a informação ativa temporariamente para manipulação consciente (ex: decorar um número de telefone até anotá-lo). Capacidade e tempo limitados.</li>
+                <li><strong>Memória de Longo Prazo (MLP):</strong> Capacidade virtualmente ilimitada. Subdivide-se em:
+                    <ul>
+                        <li><em>Explícita (Declarativa):</em> Consciente. Inclui a <strong>Episódica</strong> (eventos autobiográficos, tempo e espaço) e a <strong>Semântica</strong> (fatos, conceitos e significados estruturados).</li>
+                        <li><em>Implícita (Não-declarativa):</em> Inconsciente. Inclui a memória <strong>Procedural</strong> (habilidades motoras, como andar de bicicleta) e condicionamentos.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h2 class="section-title">4. A Memória Não é Reprodução Perfeita (Falsas Memórias e Interferência)</h2>
+        <div class="content-box">
+            <p>Lembrar não é dar "play" em um vídeo gravado. É um processo reconstrutivo. Um fenômeno que ilustra isso são as <strong>Falsas Memórias</strong>. Devido à nossa tendência de buscar coerência e preencher lacunas (associação de conhecimentos prévios), podemos jurar ter vivenciado detalhes ou eventos que nunca ocorreram. Além disso, sofremos com a <strong>Interferência</strong> (pró-ativa ou retroativa), onde aprendizados antigos atrapalham os novos, e vice-versa. O humor atual e o contexto da recuperação também alteram a forma como o passado é evocado.</p>
+        </div>
+
+        <h2 class="section-title">5. Síntese Explicativa &amp; Conclusão Coletiva</h2>
+        <div class="content-box">
+            <h3>Síntese Explicativa</h3>
+            <ul>
+                <li><strong>Objetivo do produto:</strong> Materializar a diferença abstrata entre o armazenamento biológico e o digital, permitindo ao usuário vivenciar as falhas e adaptações intrínsecas da memória humana.</li>
+                <li><strong>Conceitos utilizados:</strong> Codificação atencional, falhas de recuperação, preenchimento por contexto (falsas memórias) e reestruturação da informação.</li>
+                <li><strong>Justificativa das escolhas:</strong> Uma página web interativa foi escolhida por permitir uma comparação "lado a lado" e em tempo real, exigindo ação do usuário para demonstrar que o cérebro humano transforma a entrada, enquanto o PC apenas a copia.</li>
+                <li><strong>Contribuição da Computação:</strong> Uso de linguagens web (HTML/JS) para criar um algoritmo que simula a "corrupção" natural da memória biológica através de substituições de strings de forma randômica e contextual.</li>
+            </ul>
+            
+            <h3>Conclusão Coletiva</h3>
+            <p>O que aprendemos sobre a memória humana que não conseguiríamos explicar adequadamente utilizando apenas a metáfora do computador?</p>
+            <p>Aprendemos que a memória humana possui uma dimensão <strong>afetiva e semântica</strong> que a máquina ignora. Para o computador, o dado tem o mesmo valor e precisão independentemente do tempo ou contexto. O modelo computacional falha em explicar por que esquecemos coisas vitais e lembramos de banalidades, ou como um trauma altera a percepção do passado. A memória humana é maleável, evolutiva e essencialmente criativa, desenhada não para arquivar o passado com precisão matemática, mas para nos ajudar a prever e sobreviver ao futuro.</p>
+            
+            <h3>Referências</h3>
+            <p>1. STERNBERG, R. J. Psicologia Cognitiva. 5. ed. São Paulo: Cengage Learning, 2010.<br>
+               2. GAZZANIGA, M. S.; HEATHERTON, T. F.; HALPERN, D. F. Ciência Psicológica. 5. ed. Porto Alegre: Artmed, 2018.</p>
+        </div>
+
+    </div>
+
+    <script>
+        function simulatePC() {
+            const input = document.getElementById('memoryInput').value;
+            if(!input) return alert("Por favor, insira uma lembrança no campo de texto.");
+            
+            document.getElementById('pc-steps').style.display = 'block';
+            document.getElementById('pc-output').innerText = "Processando...";
+            
+            setTimeout(() => {
+                document.getElementById('pc-output').innerText = "> C:\HD_DATA\mem.txt\n> " + input;
+            }, 1000);
+        }
+
+        function simulateHuman() {
+            const input = document.getElementById('memoryInput').value;
+            if(!input) return alert("Por favor, insira uma lembrança no campo de texto.");
+            
+            document.getElementById('human-steps').style.display = 'block';
+            document.getElementById('human-output').innerText = "Consolidando sinapses e preenchendo lacunas...";
+            
+            setTimeout(() => {
+                let words = input.split(' ');
+                if (words.length > 3) {
+                    let altered = input.replace(/muito|sempre|nunca/gi, "[esquecido]");
+                    const adicoes = ["...acho que foi assim.", "...ou talvez tenha sido diferente?", "...e me senti estranho com isso."];
+                    const adicaoAleatoria = adicoes[Math.floor(Math.random() * adicoes.length)];
+                    document.getElementById('human-output').innerText = '"' + altered + ' ' + adicaoAleatoria + '"';
+                } else {
+                    document.getElementById('human-output').innerText = '"' + input + '... espera, foi isso mesmo que aconteceu?"';
+                }
+            }, 1500);
+        }
+
+        // Função para baixar o próprio arquivo HTML
+        function downloadHTML() {
+            // Pega todo o conteúdo da página atual
+            const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+            
+            // Cria um "blob" (um arquivo temporário na memória do navegador)
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            
+            // Cria um link temporário para forçar o download
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Trabalho_Psicologia_Memoria_UFRPE.html';
+            
+            // Simula o clique no link para baixar e depois limpa
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+
+</body></html>
